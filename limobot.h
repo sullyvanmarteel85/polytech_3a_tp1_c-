@@ -13,7 +13,7 @@ class LimoBot{
 		void speed_down();
 		void turn(bool direction);
 		void rotate(bool direction);
-		Order get_order() const;
+		void print_order_speed();
 	private:
 		Order m_order;
 
