@@ -10,7 +10,7 @@ void Order::limit() {
 	
 	//Si la valeur absolue est plus grande que SPEED_MAX, on cape.
 	m_order_L = (/*Valeur absolue de m_order_L est plus grand que SPEED_MAX ?*/((m_order_L < 0) ? -m_order_L : m_order_L) > SPEED_MAX) ? ( m_order_L < 0 ? -SPEED_MAX : SPEED_MAX) : m_order_L;//Si oui, on cape sans oublier le signe si on le fait.
-	m_order_R = (/*Valeur absolue de m_order_R est plus grand que SPEED_MAX ?*/((m_order_R < 0) ? -m_order_L : m_order_L) > SPEED_MAX) ? ( m_order_R < 0 ? -SPEED_MAX : SPEED_MAX) : m_order_R;//Si oui, on cape sans oublier le signe si on le fait.
+	m_order_R = (/*Valeur absolue de m_order_R est plus grand que SPEED_MAX ?*/((m_order_R < 0) ? -m_order_R : m_order_R) > SPEED_MAX) ? ( m_order_R < 0 ? -SPEED_MAX : SPEED_MAX) : m_order_R;//Si oui, on cape sans oublier le signe si on le fait.
 }
 
 short Order::get_order_R() const {
