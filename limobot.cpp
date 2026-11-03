@@ -1,8 +1,16 @@
-#include<stdio.h>
-#include<iostream>
 #include"limobot.h"
-LimoBot::LimoBot() : m_order(0, 0){
+
+LimoBot::LimoBot() : m_order(0, 0), m_stop(false), m_thread([this]() {run();}){
 }
+
+
+
+
+
+
+
+
+
 
 void LimoBot::stop() {
 	m_order.set_order(0, 0);
@@ -31,3 +39,25 @@ void LimoBot::print_order_speed(){
 	std::cout << "Order R:" << m_order.get_order_R() << "\n";
 }
 
+
+
+
+
+
+void LimoBot::run() {
+	static int cpt;
+
+	while(m_stop == false) {
+		std::cout << "Thread [send]: " << ++cpt << "\n";
+		//Code d'émission de la trame
+		std::this_thread::sleep_for(std::chrono::milliseconds(LOOP_TIME));
+	}
+	std::cout << "Thread [send]: stop !\n\n";
+}
+
+LimoBot::~LimoBot() {
+	m_stop = true;
+	if(m_thread.joinable()){
+		m_thread.join();
+	}
+}
