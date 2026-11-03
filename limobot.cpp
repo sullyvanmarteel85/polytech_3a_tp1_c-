@@ -1,6 +1,6 @@
 #include"limobot.h"
 
-LimoBot::LimoBot() : m_order(0, 0), m_stop(false), m_thread([this]() {run();}){
+LimoBot::LimoBot() : m_order(0, 0), m_stop(false), m_p_thread(new std::thread([this] {run();})){
 }
 
 
@@ -57,7 +57,9 @@ void LimoBot::run() {
 
 LimoBot::~LimoBot() {
 	m_stop = true;
-	if(m_thread.joinable()){
-		m_thread.join();
+	if(m_p_thread->joinable()){
+		m_p_thread->join();
 	}
+
+	delete m_p_thread;
 }

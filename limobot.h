@@ -22,7 +22,7 @@ class LimoBot{
 	private:
 		Order m_order;
 		bool m_stop;
-		std::thread m_thread;
+		std::thread* m_p_thread;
 		void run();
 
 };
