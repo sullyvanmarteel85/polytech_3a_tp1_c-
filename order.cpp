@@ -1,7 +1,5 @@
 #include"order.h"
-Order::Order(short left, short right) {
-	m_order_L = left;
-	m_order_R = right;
+Order::Order(short left, short right) : m_order_L(left), m_order_R(right){
 	limit();
 }
 
