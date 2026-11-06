@@ -1,17 +1,13 @@
 #include"limobot.h"
 
-LimoBot::LimoBot() : m_order(0, 0), m_stop(false), m_p_thread(new std::thread([this] {run();})){
+//Constructeur, deconstructeur
+LimoBot::LimoBot() : m_order(0, 0), m_stop(false), m_p_thread(NULL), m_socket(){
 }
 
-
-
-
-
-
-
-
-
-
+LimoBot::~LimoBot() {
+	this->disconnect();
+}
+//Fonctions de mouvement-------------------------------------------------------------------------------------
 void LimoBot::stop() {
 	m_order.set_order(0, 0);
 }
@@ -41,25 +37,49 @@ void LimoBot::print_order_speed(){
 
 
 
-
-
-
+//Multithreading---------------------------------------------------------------------------------------------
 void LimoBot::run() {
 	static int cpt;
 
 	while(m_stop == false) {
-		std::cout << "Thread [send]: " << ++cpt << "\n";
-		//Code d'émission de la trame
+		unsigned char* p_data = new unsigned char[7]{0xFF, 0x05, (unsigned char) m_order.get_order_L(), (unsigned char) m_order.get_order_R(), 0x00, 0x00, 0x00};
+		std::cout << "Thread [send]: computing crc\n";
+		int crc = 0xFFFF, pol = 0xA001;
+		for(int i = 1; i < 5; i++) {
+			crc ^= p_data[i];
+			for(int j = 0; j < 8; j++) {
+				if((crc & 0x0001) == 1) crc = (crc >> 1) ^ pol;
+				else crc = crc >> 1;
+			}
+		}
+
+		p_data[5] = static_cast<unsigned char> (crc & 0xFF);
+		p_data[6] = static_cast<unsigned char> ((crc >> 8) & 0xFF);
+		std::cout << "Thread [send]: sending bytes\n";
+		m_socket.send(p_data, 7);
 		std::this_thread::sleep_for(std::chrono::milliseconds(LOOP_TIME));
 	}
 	std::cout << "Thread [send]: stop !\n\n";
 }
 
-LimoBot::~LimoBot() {
+
+//Connectivite
+
+void LimoBot::connect(std::string ip){
+	std::cout << "Connecting to " << ip << ":" << LIMOPORT << "\n";
+	m_socket.open(ip,LIMOPORT);
+	if(m_socket.is_open()){
+		m_p_thread = new std::thread([this] {run();});
+	}
+}
+
+void LimoBot::disconnect() {
+	if(m_socket.is_open()){
+		m_socket.close();
+	}
 	m_stop = true;
 	if(m_p_thread->joinable()){
 		m_p_thread->join();
 	}
-
 	delete m_p_thread;
 }

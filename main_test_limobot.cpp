@@ -1,16 +1,46 @@
 #include"limobot.h"
 #include<iostream>
 #include<stdio.h>
-#include<chrono>
-
 
 int main(){
-	LimoBot robot;
+	LimoBot obj;
+	obj.print_order_speed();
+	
+	std::cout << "\nspeed_up...\n";
+	obj.speed_up();
+	obj.print_order_speed();
+	std::cout << "\nspeed_up...\n";
+	obj.speed_up();
+	obj.print_order_speed();
+	std::cout << "speed_down...\n";
+	obj.speed_down();
+	obj.print_order_speed();
 
-	for(int i=0; i<30; i++){
-		std::cout << "Thread [main]\n";
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
+	std::cout << "\nturn(true)...\n";
+	obj.turn(true);
+	obj.print_order_speed();
+	std::cout << "stop...\n";
+	obj.stop();
+	obj.print_order_speed();
+	std::cout << "speed_up...\n";
+	obj.speed_up();
+	obj.print_order_speed();
+	std::cout << "turn(false)...\n";
+	obj.turn(false);
+	obj.print_order_speed();
+	
+	std::cout << "\nrotate(true)...\n";
+	obj.rotate(true);
+	obj.print_order_speed();
+	std::cout << "rotate(false)...\n";
+	obj.rotate(false);
+	obj.print_order_speed();
+	std::cout << "stop...\n";
+	obj.stop();
+	obj.print_order_speed();
+
+
+
 
 	return 0;
 }
