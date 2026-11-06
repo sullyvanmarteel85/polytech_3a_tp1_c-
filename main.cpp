@@ -2,12 +2,14 @@
 #include<iostream>
 #include<stdio.h>
 #include<chrono>
-
+#include<string>
 
 int main(){
 	LimoBot robot;
-
-	robot.connect("192.168.1.150");
+	std::string ip = "";
+	std::cout << "Entrez l'ip:";
+	std::cin >> ip;
+	robot.connect(ip);
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	for(int i = 0; i < 20;i++){
 		robot.speed_up();
