@@ -2,6 +2,7 @@
 #define LIMOBOT_H
 #define PAS_CONSIGNE 5
 #define PAS_TOURNANT 0.2
+#define ROTATE_SPEED 10
 #define LOOP_TIME 200
 #define LIMOPORT 15020
 #include"order.h"
@@ -11,6 +12,7 @@
 #include<iostream>
 #include<string>
 #include"socket.h"
+#include<iomanip>
 
 class LimoBot{
 	public:

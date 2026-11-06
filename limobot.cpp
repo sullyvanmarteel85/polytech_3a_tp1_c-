@@ -27,7 +27,7 @@ void LimoBot::turn(bool direction){
 void LimoBot::rotate(bool direction){
 	stop();
 	usleep(1000000);
-	m_order.set_order( direction ? 10 : -10, direction ? -10 : 10);
+	m_order.set_order( direction ? ROTATE_SPEED : -ROTATE_SPEED, direction ? -ROTATE_SPEED : ROTATE_SPEED);
 }
 
 void LimoBot::print_order_speed(){
@@ -42,8 +42,16 @@ void LimoBot::run() {
 	static int cpt;
 
 	while(m_stop == false) {
-		unsigned char* p_data = new unsigned char[7]{0xFF, 0x05, (unsigned char) m_order.get_order_L(), (unsigned char) m_order.get_order_R(), 0x00, 0x00, 0x00};
+		unsigned char sign = 0x00;
+		if(m_order.get_order_L() >= 0){
+			sign+=2;
+		}
+		if(m_order.get_order_R() >= 0){
+			sign+=1;
+		}
+		unsigned char* p_data = new unsigned char[7]{0xFF, 0x05, static_cast<unsigned char>((m_order.get_order_L()<0) ? -m_order.get_order_L() : m_order.get_order_L()), static_cast<unsigned char>((m_order.get_order_R() < 0) ? -m_order.get_order_R() : m_order.get_order_R()), sign, 0x00, 0x00};
 		std::cout << "Thread [send]: computing crc\n";
+		//CRC
 		int crc = 0xFFFF, pol = 0xA001;
 		for(int i = 1; i < 5; i++) {
 			crc ^= p_data[i];
@@ -55,7 +63,12 @@ void LimoBot::run() {
 
 		p_data[5] = static_cast<unsigned char> (crc & 0xFF);
 		p_data[6] = static_cast<unsigned char> ((crc >> 8) & 0xFF);
-		std::cout << "Thread [send]: sending bytes\n";
+		std::cout << "Thread [send]: sending bytes: 0x";
+		for(int i = 0; i < 7;i++){
+			std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(*(p_data + i));
+		}
+		std::cout<<"\n";
+
 		m_socket.send(p_data, 7);
 		std::this_thread::sleep_for(std::chrono::milliseconds(LOOP_TIME));
 	}

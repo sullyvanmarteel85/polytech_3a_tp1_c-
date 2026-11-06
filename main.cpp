@@ -7,12 +7,13 @@
 int main(){
 	LimoBot robot;
 
-	robot.connect("");
-	for(int i=0; i<8; i++){
-		std::cout << "Thread [main]\n";
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
-
+	robot.connect("192.168.1.150");
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	robot.speed_up();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	robot.rotate(1);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	robot.stop();
 	std::cout << "\n";
 	return 0;
 }
