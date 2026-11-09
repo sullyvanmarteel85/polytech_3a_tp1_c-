@@ -2,7 +2,7 @@
 
 #include<gtkmm/window.h>
 #include<gtkmm/button.h>
-#include<gtkmm/aspectframe.h>
+#include<gtkmm/frame.h>
 #include<gtkmm/frame.h>
 #include<gtkmm/paned.h>
 #include<iostream>
@@ -12,6 +12,6 @@ class Gui : public Gtk::Window {
 		Gui();
 		~Gui();
 	private:
-		Gtk::AspectFrame m_aspect_frame;
+		Gtk::Frame m_frame;
 		Gtk::Button m_button_1;
 };
