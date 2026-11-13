@@ -42,6 +42,7 @@ void LimoBot::run() {
 	static int cpt;
 
 	while(m_stop == false) {
+		//Calcul du signe de vitesse
 		unsigned char sign = 0x00;
 		if(m_order.get_order_L() >= 0){
 			sign+=2;
@@ -49,19 +50,29 @@ void LimoBot::run() {
 		if(m_order.get_order_R() >= 0){
 			sign+=1;
 		}
+
+		//Calcul de la trame: 0xFF05 pour le début, puis la valeur absolue de la vitesse, puis le CRC16 Modbus.
 		unsigned char* p_data = new unsigned char[7]{0xFF, 0x05, static_cast<unsigned char>((m_order.get_order_L()<0) ? -m_order.get_order_L() : m_order.get_order_L()), static_cast<unsigned char>((m_order.get_order_R() < 0) ? -m_order.get_order_R() : m_order.get_order_R()), sign, 0x00, 0x00};
 		std::cout << "Thread [send]: computing crc\n";
-		//CRC
+		
+		//Calcul du CRC16 Modbus
+		//Polynôme caractéristique du CRC16 Modbus: 0XA001, CRC initial: 0xFFFF
 		int crc = 0xFFFF, pol = 0xA001;
+
 		for(int i = 1; i < 5; i++) {
+			//XOR avec le i-ième octet de la trame
 			crc ^= p_data[i];
 			for(int j = 0; j < 8; j++) {
+				//Pour chaque bit dans l'octet, si crc est impair, décaler crc de 1 et faire XOR
 				if((crc & 0x0001) == 1) crc = (crc >> 1) ^ pol;
+				//Sinon, décaler CRC
 				else crc = crc >> 1;
 			}
 		}
 
+		//Ajout des bits de poids faible dans la trame
 		p_data[5] = static_cast<unsigned char> (crc & 0xFF);
+		//Ajout des bits de poids fort dans la trame
 		p_data[6] = static_cast<unsigned char> ((crc >> 8) & 0xFF);
 		std::cout << "Thread [send]: sending bytes: 0x";
 		for(int i = 0; i < 7;i++){
@@ -69,6 +80,7 @@ void LimoBot::run() {
 		}
 		std::cout<<"\n";
 
+		//Envoie de la trame au port LIMOPORT de l'adresse ip entrée lors de la connexion
 		m_socket.send(p_data, 7);
 		std::this_thread::sleep_for(std::chrono::milliseconds(LOOP_TIME));
 	}
