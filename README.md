@@ -12,6 +12,7 @@ make listen
 
 
 Pour faire un test complet sans connexion au LimoBot:
+
 Compiler le programme.
 Taper dans un terminal secondaire à la racine du projet "make listen"
 Taper dans le terminal courant à la racine du projet "make run"
