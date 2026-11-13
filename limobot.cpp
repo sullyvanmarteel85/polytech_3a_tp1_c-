@@ -21,7 +21,8 @@ void LimoBot::speed_down() {
 }
 
 void LimoBot::turn(bool direction){
-	m_order.set_order( short(m_order.get_order_L() * ((direction ? 1 + PAS_TOURNANT : 1 - PAS_TOURNANT))), short(m_order.get_order_R() * (direction ? 1.0 - PAS_TOURNANT : 1.0 + PAS_TOURNANT)));
+	m_order.set_order( m_order.get_order_L() * ((direction ? 1 + PAS_TOURNANT : 1 - PAS_TOURNANT)),
+			m_order.get_order_R() * (direction ? 1.0 - PAS_TOURNANT : 1.0 + PAS_TOURNANT));
 }
 
 void LimoBot::rotate(bool direction){
