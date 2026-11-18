@@ -3,8 +3,6 @@
 #include<gtkmm/window.h>
 #include<gtkmm/button.h>
 #include<gtkmm/frame.h>
-#include<gtkmm/frame.h>
-#include<gtkmm/paned.h>
 #include<iostream>
 
 class Gui : public Gtk::Window {
