@@ -7,7 +7,7 @@
 
 int main(int argc, char* argv[]) {
 	Gtk::Main app(argc, argv);
-	Gui gui;
+	Gui gui(*(new LimoBot()));
 
 	app.run(gui);
 	return 0;

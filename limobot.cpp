@@ -7,6 +7,12 @@ LimoBot::LimoBot() : m_order(0, 0), m_stop(false), m_p_thread(NULL), m_socket(){
 LimoBot::~LimoBot() {
 	this->disconnect();
 }
+
+//Getter et setter
+
+bool LimoBot::isStopped() {
+	return m_stop;
+}
 //Fonctions de mouvement-------------------------------------------------------------------------------------
 void LimoBot::stop() {
 	m_order.set_order(0, 0);
@@ -95,6 +101,7 @@ void LimoBot::connect(std::string ip){
 	std::cout << "Connecting to " << ip << ":" << LIMOPORT << "\n";
 	m_socket.open(ip,LIMOPORT);
 	if(m_socket.is_open()){
+		m_stop = false;
 		m_p_thread = new std::thread([this] {run();});
 	}
 }
@@ -108,4 +115,5 @@ void LimoBot::disconnect() {
 		m_p_thread->join();
 	}
 	delete m_p_thread;
+	m_p_thread = NULL;
 }

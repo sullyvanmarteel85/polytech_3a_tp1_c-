@@ -11,6 +11,10 @@ int main(){
 	std::cin >> ip;
 	robot.connect(ip);
 	std::this_thread::sleep_for(std::chrono::seconds(1));
+	robot.disconnect();
+	std::this_thread::sleep_for(std::chrono::seconds(10));
+	robot.connect(ip);
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	for(int i = 0; i < 20;i++){
 		robot.speed_up();
 	}

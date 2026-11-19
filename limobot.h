@@ -29,6 +29,7 @@ class LimoBot{
 		//Connectivite
 		void connect(std::string ip);
 		void disconnect();
+		bool isStopped();
 	private:
 		Order m_order;
 		bool m_stop;
