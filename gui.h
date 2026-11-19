@@ -1,8 +1,14 @@
 #pragma once
 
+#define BUTTON_NUMBER 6
+
 #include<gtkmm/window.h>
 #include<gtkmm/button.h>
-#include<gtkmm/frame.h>
+#include<gtkmm/box.h>
+#include<gtkmm/image.h>
+#include<gtkmm/entry.h>
+#include<gtkmm/label.h>
+#include<gtkmm/grid.h>
 #include<iostream>
 
 class Gui : public Gtk::Window {
@@ -10,6 +16,10 @@ class Gui : public Gtk::Window {
 		Gui();
 		~Gui();
 	private:
-		Gtk::Frame m_frame;
-		Gtk::Button m_button_1;
+		Gtk::Box m_box_main, m_box_inputs, m_box_ip;
+		Gtk::Image m_image;
+		Gtk::Entry m_entry_ip;
+		Gtk::Label m_label_ip;
+		Gtk::Grid m_grid_button;
+		Gtk::Button* m_buttons;
 };

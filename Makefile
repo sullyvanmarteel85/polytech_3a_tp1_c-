@@ -8,7 +8,7 @@ vncstop:
 	@vncserver -kill :1
 
 gui:
-	@g++ main_gui.cpp gui.cpp $(GTK_ARGS)
+	@g++ main_gui.cpp gui.cpp limobot.cpp order.cpp socket.cpp $(GTK_ARGS)
 
 backend:
 	@g++ main.cpp limobot.cpp order.cpp socket.cpp
